@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Um pedido 💗</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif}
+body{
+  background:radial-gradient(circle at 50% 20%,#5f0008 0%,#2b0004 55%,#120002 100%);
+  position:relative;color:#222;
+}
+.hearts{position:fixed;inset:0;overflow:hidden;pointer-events:none}
+.heart{
+  position:absolute;top:-10vh;color:#ff3154;
+  font-size:clamp(18px,4vw,42px);
+  opacity:.75;filter:drop-shadow(0 0 8px rgba(255,30,70,.35));
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  0%{transform:translate3d(0,-12vh,0) rotate(0deg);opacity:0}
+  10%{opacity:.8}
+  100%{transform:translate3d(var(--drift),115vh,0) rotate(360deg);opacity:.15}
+}
+.card{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(92vw,680px);min-height:360px;
+  padding:28px 22px 34px;border-radius:48px;
+  background:#eeeefe;box-shadow:0 12px 45px rgba(0,0,0,.35);
+  text-align:center;z-index:2;
+}
+.photo{
+  width:190px;height:190px;margin:0 auto 22px;
+  border-radius:10px;overflow:hidden;background:#fff;
+}
+.photo img{width:100%;height:100%;object-fit:cover}
+h1{font-size:22px;margin:0 0 12px}
+.subtitle{font-size:14px;font-weight:bold;color:#c84b5b;margin-bottom:14px}
+.buttons{position:relative;height:56px;margin-top:4px}
+button{
+  border:0;border-radius:6px;color:white;font-size:16px;font-weight:bold;
+  padding:10px 28px;cursor:pointer;touch-action:manipulation;
+  box-shadow:0 3px 7px rgba(0,0,0,.18);
+}
+#yes{background:#1fa944}
+#no{background:#dc3347;position:absolute;left:calc(50% - 100px);top:0;transition:left .16s ease,top .16s ease}
+.message{
+  display:none;font-size:22px;font-weight:bold;color:#c92e49;
+  margin-top:10px;animation:pop .35s ease;
+}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+@media(max-width:420px){
+  .card{min-height:330px;padding-top:24px;border-radius:42px}
+  .photo{width:175px;height:175px}
+  h1{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+
+<main class="card">
+  <div class="photo"><img src="ursinho.png" alt="Ursinho segurando uma flor"></div>
+  <h1>Você aceita ser minha namorada?</h1>
+  <div class="subtitle">Vai clicar mesmo?</div>
+
+  <div class="buttons" id="area">
+    <button id="yes">SIM</button>
+    <button id="no">NÃO</button>
+  </div>
+
+  <div class="message" id="message">EU SABIAAA 😭💗💗💗</div>
+</main>
+
+<script>
+const no = document.getElementById("no");
+const area = document.getElementById("area");
+const yes = document.getElementById("yes");
+const message = document.getElementById("message");
+
+function fugir(){
+  const areaRect = area.getBoundingClientRect();
+  const btnRect = no.getBoundingClientRect();
+
+  // Faz o botão fugir para uma posição aleatória dentro da área visível.
+  const maxX = Math.max(0, areaRect.width - btnRect.width);
+  const maxY = Math.max(0, areaRect.height - btnRect.height);
+  no.style.left = Math.random() * maxX + "px";
+  no.style.top = Math.random() * maxY + "px";
+}
+["mouseenter","touchstart","pointerdown"].forEach(evt => no.addEventListener(evt, e => {
+  e.preventDefault();
+  fugir();
+}));
+
+yes.addEventListener("click",()=>{
+  message.style.display="block";
+  yes.textContent="💗 SIM 💗";
+  no.style.display="none";
+});
+
+const hearts = document.getElementById("hearts");
+const symbols = ["♥","❤","💕","💗","💖"];
+
+for(let i=0;i<35;i++){
+  const h=document.createElement("span");
+  h.className="heart";
+  h.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  h.style.left=Math.random()*100+"%";
+  h.style.animationDuration=(5+Math.random()*8)+"s";
+  h.style.animationDelay=(-Math.random()*12)+"s";
+  h.style.setProperty("--drift",(Math.random()*160-80)+"px");
+  h.style.fontSize=(16+Math.random()*28)+"px";
+  hearts.appendChild(h);
+}
+</script>
+</body>
+</html>
